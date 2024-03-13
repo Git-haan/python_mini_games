@@ -1,2 +1,2 @@
-# Ready to compete in a game of rock, paper, scissors?
+# Ready to compete in a guess the code game?
 # Test your skills using a simple python algorithm
