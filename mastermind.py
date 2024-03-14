@@ -91,7 +91,11 @@ def game():
         print(f'{i} tries left!')
 
     else:
+        print()
+        print('The cops arrived!')
+        print()
         print(f'You ran out of tries, the code was: {code}')
+        print('Thank you for playing!')
 
 # Introduction
 
