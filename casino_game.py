@@ -4,12 +4,16 @@ Casino Game
 Author: Ishaan Reddy
 '''
 import random
+import time
+import copy
 
 MAX_LINES = 3
-MAX_BET = 1000
-MIN_BET = 1
+MAX_WAGER = 1000000
+MIN_WAGER = 1
+MIN_DEPOSIT = 10
+MAX_DEPOSIT = 10000000
 
-REEL = ['@', '#','$', '%', '&', '*']
+REEL = ['@', '#', '%']
 
 def spin():
     random_reel = []
@@ -18,21 +22,50 @@ def spin():
         random_reel = [random.choice(REEL), random.choice(REEL), random.choice(REEL)]
     return random_reel
 
-machine = [spin(), spin(), spin()]
-
 def print_machine(M):
-    # machine = [[M[j][i] for j in range(len(M))] for i in range(len(M[0]))]
     
     print()
     print('---- SLOT MACHINE ----')
     print('----------------------')
+    time.sleep(2)
 
     for row in machine:
         for element in row:
             print('|', element, '|', end ='\t')
         print()
+        time.sleep(2)
     print()
+    
+def check_list(M, lines):
 
+    count = 0
+
+    if lines == 1:
+        for i in range(len(M) - 2):
+            if M[i][0] == M[i][1] == M[i][2]:
+                print(f'You won on line {i + 1}!')
+                count += 1
+            else:
+                print(f'You lost on line {i + 1}!')
+                count -= 1
+    elif lines == 2:
+        for i in range(len(M) - 1):
+            if M[i][0] == M[i][1] == M[i][2]:
+                print(f'You won on line {i + 1}!')
+                count += 1
+            else:
+                print(f'You lost on line {i + 1}!')
+                count -= 1
+    elif lines == 3:
+        for i in range(len(M)):
+            if M[i][0] == M[i][1] == M[i][2]:
+                print(f'You won on line {i + 1}!')
+                count += 1
+            else:
+                print(f'You lost on line {i + 1}!')
+                count -= 1
+
+    return count
 
 def deposit():
     while True:
@@ -41,12 +74,12 @@ def deposit():
         if amount.isdigit():
             amount = int(amount)
 
-            if amount > 0:
+            if 10000000 > amount >= 10:
                 break
             else:
-                print('-------------------------------------------------')
-                print('WARNING: Amount must be greater than 0.')
-                print('-------------------------------------------------')
+                print('--------------------------------------------------------------------------------')
+                print(f'WARNING: The casino mandates a deposit between ${MIN_DEPOSIT} - ${MAX_DEPOSIT}.')
+                print('--------------------------------------------------------------------------------')
                 print()
                 continue
 
@@ -69,9 +102,9 @@ def get_lines():
             if lines > 0:
                 pass
             else:
-                print('-------------------------------------------------')
+                print('-------------------------------------------')
                 print('WARNING: Amount must be greater than 0!')
-                print('-------------------------------------------------')
+                print('-------------------------------------------')
                 print()
                 continue
 
@@ -99,27 +132,27 @@ def get_bet():
         if bet.isdigit():
             bet = int(bet)
 
-            if bet > MIN_BET:
+            if bet >= MIN_BET:
                 pass
             else:
-                print('-------------------------------------------------')
+                print('----------------------------------------------------')
                 print(f'WARNING: The casino mandates a minumum bet of ${MIN_BET}.')
-                print('-------------------------------------------------')
+                print('----------------------------------------------------')
                 print()
                 continue
 
             if bet <= MAX_BET:
                 break
             else:
-                print('-------------------------------------------------')
+                print('--------------------------------------------------------')
                 print(f'WARNING: The casino mandates a maximum bet of ${MAX_BET}.')
-                print('-------------------------------------------------')
+                print('--------------------------------------------------------')
                 print()
                 continue
         else:
-            print('-------------------------------------------------')
+            print('-----------------------------------------')
             print('WARNING: Please enter a valid number.')
-            print('-------------------------------------------------')
+            print('-----------------------------------------')
             print()
             continue
 
