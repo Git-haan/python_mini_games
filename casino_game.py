@@ -132,20 +132,20 @@ def get_bet():
         if bet.isdigit():
             bet = int(bet)
 
-            if bet >= MIN_BET:
+            if bet >= MIN_WAGER:
                 pass
             else:
                 print('----------------------------------------------------')
-                print(f'WARNING: The casino mandates a minumum bet of ${MIN_BET}.')
+                print(f'WARNING: The casino mandates a minumum bet of ${MIN_WAGER}.')
                 print('----------------------------------------------------')
                 print()
                 continue
 
-            if bet <= MAX_BET:
+            if bet <= MAX_WAGER:
                 break
             else:
                 print('--------------------------------------------------------')
-                print(f'WARNING: The casino mandates a maximum bet of ${MAX_BET}.')
+                print(f'WARNING: The casino mandates a maximum bet of ${MAX_WAGER}.')
                 print('--------------------------------------------------------')
                 print()
                 continue
@@ -179,6 +179,7 @@ def game():
         
         while True:
             bet = get_bet()
+            
             if (bet * lines) > balance:
                 print('-------------------------------------------------')
                 print(f'WARNING: You do not enough funds to bet ${bet} on each line!')
@@ -207,17 +208,60 @@ def game():
             print('-------------------------------------------')
             print()
             continue
-    
-        spin_input = input('Please type "SPIN" to activate the machine: ').lower()
-        if spin_input == 'spin':
-            print_machine(machine)
-        else:
+        while True:
+            spin_input = input('Please hit "ENTER" to activate the machine: ').lower()
+            if spin_input != '':
+                print('-------------------------------------------------------------')
+                print('WARNING: Please hit the "ENTER" key to activate the machine.')
+                print('-------------------------------------------------------------')
+                print()
+                continue
+            else:
+                print_machine(machine)
+                break
+
+        count = check_list(machine, lines)
+
+        if count < 0:
+            balance -= (abs(bet * count))
             print('-------------------------------------------------')
-            print(f'WARNING: {spin_input} is not a valid command')
+            print(f'Total Loss: ${abs(bet * count)}!')
             print('-------------------------------------------------')
             print()
+            
+        elif count == 0:
+            print('-------------------------------------------------')
+            print('You Drew Even!')
+            print('-------------------------------------------------')
+            print()
+        else:
+            balance += (count * bet)
+            print('-------------------------------------------------')
+            print(f'Congratulations! Total Win: ${count * bet}!')
+            print('-------------------------------------------------')
+            print()
+    
+        while True:
+            play_again = input('Would you like to play again? [YES/NO]: ').lower()
 
+            if play_again == 'yes' or play_again == 'y':
+                x = False
+                break
+            elif play_again == 'no' or play_again == 'n':
+                break
+            else:
+                print('Please type a valid input.')
+                continue
+
+    print()
     print('Thank you for playing at CASINO ROYALE!')
+    print('----------------------------------------')
+    print(f'Your final balance is: ${balance}')
+    if balance > 0:
+        print(f'Profit: ${balance - orignal_balance}!')
+    else:
+        print(f'Loss: ${orignal_balance - balance}!')
+    print('----------------------------------------')
 
 if __name__ == '__main__':
     game()
