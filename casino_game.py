@@ -117,9 +117,9 @@ def get_lines():
                 print()
                 continue
         else:
-            print('-------------------------------------------------')
+            print('--------------------------------------------')
             print('WARNING: Please enter a valid number.')
-            print('-------------------------------------------------')
+            print('--------------------------------------------')
             print()
             continue
 
@@ -159,20 +159,29 @@ def get_bet():
     return bet
 
 def game():
+    print('-------------------------------------------------------------------')
     print('Welcome to CASINO ROYALE: A virtual slot machine to test your luck!')
+    print('To begin, please deposit a minimum of $10 to play!')
     print()
-    
+
+    balance = deposit()
+    original_balance = copy.copy(balance)
+
     x = False
     while x == False:
-    
-        balance = deposit()
+        global machine
+        machine = [spin(), spin(), spin()] # Initializes a random machine
+        # print(machine) if you want to see the roll before the game starts
+
+        print(f'Your current balance is: ${balance}')
+        print()
         lines = get_lines()
         
         while True:
             bet = get_bet()
             if (bet * lines) > balance:
                 print('-------------------------------------------------')
-                print(f'WARNING: You do not enough funds to bet ${bet}!')
+                print(f'WARNING: You do not enough funds to bet ${bet} on each line!')
                 print('-------------------------------------------------')
                 print()
             else:
@@ -183,6 +192,7 @@ def game():
         print(f'You are betting ${bet} on {lines} lines.')
         print(f'Your total betting valuation: ${bet * lines}')
         print('-------------------------------------------------')
+        print()
         confirm = input('Please confirm this valuation [YES/NO]:').lower()
         print()
 
@@ -192,7 +202,10 @@ def game():
             print()
             continue
         else:
-            print('Please type a valid input.')
+            print('-------------------------------------------')
+            print(f'WARNING: {confirm} is not a valid option.')
+            print('-------------------------------------------')
+            print()
             continue
     
         spin_input = input('Please type "SPIN" to activate the machine: ').lower()
